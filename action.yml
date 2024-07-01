@@ -1,0 +1,29 @@
+name: 'Nuve Platform Start Backup'
+description: 'Start a Nuve Platform backup instance'
+author: 'Simone Gaffurini'
+branding:
+  icon: 'power'
+  color: 'green'
+inputs:
+  email:
+    description: Nuve Platform email
+    required: true
+  password:
+    description: Nuve Platform password
+    required: true
+  backup:
+    description: Backup name
+    required: true
+  instanceName:
+    description: Instance name
+    required: true
+  instanceProject:
+    description: Instance project
+    required: true
+  timeout:
+    description: SAP running timeout
+    required: false
+    default: 300
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
