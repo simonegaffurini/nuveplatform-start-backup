@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Nuve Platform start backup",
   "scripts": {
-    "build": "tsc",
-    "copy": "ncp node_modules dist/node_modules"
+    "pack": "ncc build tsDist/index.js --license licenses.txt",
+    "build": "tsc && npm run pack"
   },
   "homepage": "https://github.com/simonegaffurini/nuveplatform-start-backup",
   "repository": {
