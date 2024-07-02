@@ -27355,7 +27355,7 @@ const _main = (args) => __awaiter(void 0, void 0, void 0, function* () {
     var oInstance;
     const timeoutDate = new Date((new Date()).getTime() + (args.timeout * 1000));
     core.debug(`Timeout date: ${timeoutDate.toString()}`);
-    while (!oInstance && oInstance.status !== 'sap_running') {
+    while (!oInstance || (oInstance && oInstance.status !== 'sap_running')) {
         console.log(`Waiting for instance SAP running status...`);
         yield (0, promises_1.setTimeout)(60000);
         if ((new Date()).getTime() < timeoutDate.getTime()) {
