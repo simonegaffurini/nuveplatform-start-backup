@@ -27301,10 +27301,10 @@ const _buildAxios = () => {
         if (request.data && !request.url.includes('login')) {
             sRequest += `, data: ${(0, util_1.inspect)(request.data, { breakLength: Infinity, compact: true })}`;
         }
-        core.debug(`Registry AXIOS request ${internalId}: ${sRequest}`);
+        core.debug(`Starting AXIOS request ${internalId}: ${sRequest}`);
         return request;
     }, (error) => {
-        core.debug(`Registry AXIOS request error: ${error}`);
+        core.debug(`AXIOS request error: ${error}`);
         return Promise.reject(error);
     });
     axios_1.default.interceptors.response.use((response) => {
