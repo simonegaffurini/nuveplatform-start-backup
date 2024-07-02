@@ -122,7 +122,7 @@ const _main = async (args: ActionArguments): Promise<ActionResponse> => {
         console.log(`Waiting for instance SAP running status...`);
         await setTimeout(60000);
         if((new Date()).getTime() < timeoutDate.getTime()){
-            oInstance = (await axios.post<InstanceResponse>(`/organizations/${authCheck.data.slug}/instances/${startInstance.data.id}`)).data;
+            oInstance = (await axios.get<InstanceResponse>(`/organizations/${authCheck.data.slug}/instances/${startInstance.data.id}`)).data;
         }else{
             throw new Error(`Waiting for SAP running timed out after ${args.timeout} seconds.`);
         }

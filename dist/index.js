@@ -27359,7 +27359,7 @@ const _main = (args) => __awaiter(void 0, void 0, void 0, function* () {
         console.log(`Waiting for instance SAP running status...`);
         yield (0, promises_1.setTimeout)(60000);
         if ((new Date()).getTime() < timeoutDate.getTime()) {
-            oInstance = (yield axios_1.default.post(`/organizations/${authCheck.data.slug}/instances/${startInstance.data.id}`)).data;
+            oInstance = (yield axios_1.default.get(`/organizations/${authCheck.data.slug}/instances/${startInstance.data.id}`)).data;
         }
         else {
             throw new Error(`Waiting for SAP running timed out after ${args.timeout} seconds.`);
