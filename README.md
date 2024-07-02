@@ -1,6 +1,6 @@
 # nuveplatform-start-backup
 
-Start a new instance of a [Nuve Platform](nuveplatform.com) backup.
+Start a new instance of a [Nuve Platform](https://nuveplatform.com) backup.
 
 # Usage
 ```
@@ -24,5 +24,5 @@ Start a new instance of a [Nuve Platform](nuveplatform.com) backup.
     # Timeout (in seconds) after which the action won't check of SAP running
     # Default: 300 (5 minutes)
     timeout: 300
-    
+
 ```
