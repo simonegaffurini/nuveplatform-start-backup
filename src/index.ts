@@ -118,7 +118,7 @@ const _main = async (args: ActionArguments): Promise<ActionResponse> => {
     var oInstance: InstanceResponse;
     const timeoutDate = new Date((new Date()).getTime() + (args.timeout * 1000));
     core.debug(`Timeout date: ${timeoutDate.toString()}`);
-    while(!oInstance || oInstance.status !== 'sap_running'){
+    while(!oInstance && oInstance.status !== 'sap_running'){
         console.log(`Waiting for instance SAP running status...`);
         await setTimeout(60000);
         if((new Date()).getTime() < timeoutDate.getTime()){
