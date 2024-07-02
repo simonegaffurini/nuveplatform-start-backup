@@ -2,6 +2,7 @@ import * as core from "@actions/core";
 import axios from 'axios';
 import { inspect } from "util";
 import { v4 as uuidv4 } from 'uuid';
+import { setTimeout } from "timers/promises";
 
 type ActionArguments = {
     email: string,
@@ -16,6 +17,10 @@ type ActionResponse = {
     external_ip: string,
     sap_system_id: string,
     sap_system_no: string
+}
+
+type LoginResponse = {
+    token: string
 }
 
 type AuthCheckResponse = {
@@ -66,6 +71,10 @@ const _buildAxios = () => {
     });
     axios.interceptors.response.use((response) => {
         const internalId = response.request && response.request[AXIOS_INTERNAL_ID_KEY] ? response.request[AXIOS_INTERNAL_ID_KEY] : 'Unknown';
+        if(response.data && response.data.token){
+            //MIW: secret in response, avoid leak
+            core.setSecret(response.data.token);
+        }
         var sResponse = `status: ${response.status}, status text: ${response.statusText}`;
         if (response.data) {
             sResponse += `, data: ${inspect(response.data, { breakLength: Infinity, compact: true })}`;
@@ -81,7 +90,7 @@ const _buildAxios = () => {
 
 const _main = async (args: ActionArguments): Promise<ActionResponse> => {
     _buildAxios();
-    const authResponse = await axios.post<any>(`/auth/login`, {
+    const authResponse = await axios.post<LoginResponse>(`/auth/login`, {
         email: args.email,
         password: args.password
     });
@@ -110,10 +119,12 @@ const _main = async (args: ActionArguments): Promise<ActionResponse> => {
     const timeoutDate = new Date((new Date()).getTime() + (args.timeout * 1000));
     core.debug(`Timeout date: ${timeoutDate.toString()}`);
     while(!oInstance || oInstance.status !== 'sap_running'){
+        console.log(`Waiting for instance SAP running status...`);
+        await setTimeout(60000);
         if((new Date()).getTime() < timeoutDate.getTime()){
             oInstance = (await axios.post<InstanceResponse>(`/organizations/${authCheck.data.slug}/instances/${startInstance.data.id}`)).data;
         }else{
-            throw new Error(`Awaiting for SAP running timedout after ${args.timeout} seconds.`);
+            throw new Error(`Waiting for SAP running timed out after ${args.timeout} seconds.`);
         }
     }
     return {
@@ -141,7 +152,7 @@ _main({
     core.setOutput('externalIp', response.external_ip);
     core.setOutput('systemId', response.sap_system_id);
     core.setOutput('systemNo', response.sap_system_no);
-    console.log(`SAP running.`);
+    console.log(`SAP instance running.`);
 }).catch(e => {
     var sError: string;
     try {
