@@ -23,7 +23,7 @@ inputs:
   timeout:
     description: SAP running timeout
     required: false
-    default: 300
+    default: 600
 runs:
   using: 'node20'
   main: 'dist/index.js'

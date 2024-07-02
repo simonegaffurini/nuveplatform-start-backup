@@ -22,7 +22,7 @@ Start a new instance of a [Nuve Platform](https://nuveplatform.com) backup.
     instanceProject: ''
 
     # Timeout (in seconds) after which the action won't check of SAP running
-    # Default: 300 (5 minutes)
-    timeout: 300
+    # Default: 600 (10 minutes)
+    timeout: 600
 
 ```
