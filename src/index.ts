@@ -16,7 +16,9 @@ type ActionArguments = {
 type ActionResponse = {
     external_ip: string,
     sap_system_id: string,
-    sap_system_no: string
+    sap_system_no: string,
+    friendly_domain: string,
+    web_domain: string
 }
 
 type LoginResponse = {
@@ -36,6 +38,7 @@ type BackupResponse = {
 
 type InstanceResponse = {
     id: number,
+    name: string,
     status: string,
     external_ip: string,
     backup: {
@@ -128,10 +131,13 @@ const _main = async (args: ActionArguments): Promise<ActionResponse> => {
         }
     }
     if(oInstance && oInstance.status === 'sap_running'){
+        const friendly_domain = `${oInstance.name}.${authCheck.data.slug}.nuve.run`;
         return {
             external_ip: oInstance.external_ip,
             sap_system_id: oInstance.backup.version.package.config.sap_system_id,
-            sap_system_no: oInstance.backup.version.package.config.sap_system_no
+            sap_system_no: oInstance.backup.version.package.config.sap_system_no,
+            friendly_domain,
+            web_domain: `https://sap-${friendly_domain}`
         }
     }else{
         throw new Error(`Failed while waiting for SAP running status.`);
@@ -156,6 +162,8 @@ _main({
     core.setOutput('externalIp', response.external_ip);
     core.setOutput('systemId', response.sap_system_id);
     core.setOutput('systemNo', response.sap_system_no);
+    core.setOutput('friendlyDomain', response.friendly_domain);
+    core.setOutput('webDomain', response.web_domain);
     console.log(`SAP instance running.`);
 }).catch(e => {
     var sError: string;

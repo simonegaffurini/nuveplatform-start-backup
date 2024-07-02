@@ -24,6 +24,17 @@ inputs:
     description: SAP running timeout
     required: false
     default: 600
+outputs:
+  externalIp:
+    description: Instance external ID
+  systemId:
+    description: Instance System ID
+  systemNo:
+    description: Instance System Number
+  friendlyDomain:
+    description: Instance friendly domain
+  webDomain:
+    description: Instance web domain
 runs:
   using: 'node20'
   main: 'dist/index.js'
