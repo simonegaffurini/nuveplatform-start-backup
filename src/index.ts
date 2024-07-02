@@ -127,10 +127,14 @@ const _main = async (args: ActionArguments): Promise<ActionResponse> => {
             throw new Error(`Waiting for SAP running timed out after ${args.timeout} seconds.`);
         }
     }
-    return {
-        external_ip: oInstance.external_ip,
-        sap_system_id: oInstance.backup.version.package.config.sap_system_id,
-        sap_system_no: oInstance.backup.version.package.config.sap_system_no
+    if(oInstance && oInstance.status === 'sap_running'){
+        return {
+            external_ip: oInstance.external_ip,
+            sap_system_id: oInstance.backup.version.package.config.sap_system_id,
+            sap_system_no: oInstance.backup.version.package.config.sap_system_no
+        }
+    }else{
+        throw new Error(`Failed while waiting for SAP running status.`);
     }
 }
 
